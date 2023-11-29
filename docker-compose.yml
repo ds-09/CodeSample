@@ -1,0 +1,41 @@
+version: "3.10"
+services:
+  app:
+    container_name: backend-container
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - type: bind
+        source: /home/ds/Desktop/SRISHTI'23/low-code
+        target: /app/low-code
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=1234
+      - DB_NAME=UserData
+    depends_on:
+      - db
+  db:
+    container_name: db-backend
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=UserData
+    expose:
+      - "3306"
+    ports:
+      - "3307:3306"
+    volumes:
+      - type: bind
+        source: /home/ds/Desktop/SRISHTI'23/low-code/src/mysql-data
+        target: /var/lib/mysql
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
